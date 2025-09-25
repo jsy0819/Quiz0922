@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기억 토해내기 시뮬레이터 - Memory Treasures</title>
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="simulator-page">
+    <!-- 헤더 -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🏪</span>
+                    <h1><a href="index.html">Memory Treasures</a></h1>
+                </div>
+                
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-link">홈</a>
+                    <a href="products.html" class="nav-link">상품</a>
+                    <a href="memory-simulator.html" class="nav-link active">기억 토해내기</a>
+                    <a href="cart.html" class="nav-link">
+                        <span class="cart-icon">🛒</span>
+                        장바구니 <span id="cart-count" class="cart-count">0</span>
+                    </a>
+                </nav>
+                
+                <div class="user-menu">
+                    <div class="user-info" id="userInfo" style="display: none;">
+                        <span id="username"></span>
+                        <button onclick="logout()" class="logout-btn">로그아웃</button>
+                    </div>
+                    <div class="auth-buttons" id="authButtons">
+                        <a href="login.html" class="btn btn-outline">로그인</a>
+                        <a href="register.html" class="btn btn-primary">회원가입</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 시뮬레이터 메인 -->
+    <section class="simulator-main">
+        <div class="container">
+            <div class="simulator-header">
+                <h1>🤮 누렁이의 기억 토해내기 체험</h1>
+                <p>누렁이가 먹은 기억들이 어떻게 물건으로 변환되는지 직접 체험해보세요!</p>
+            </div>
+            
+            <!-- 누렁이 상태 -->
+            <div class="nuryeong-status-center">
+                <div class="nuryeong-container">
+                    <div class="nuryeong-avatar" id="nuryeongAvatar">
+                        <div class="nuryeong-face">🐕</div>
+                        <div class="nuryeong-body"></div>
+                        <div class="stomach-indicator" id="stomachIndicator">
+                            <div class="stomach-fill" id="stomachFill"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="nuryeong-speech">
+                        <div class="speech-bubble" id="nuryeongSpeech">
+                            안녕! 나는 누렁이야! 기억을 먹고 물건으로 토해내는 특별한 능력이 있어!
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="status-panels">
+                    <div class="status-panel">
+                        <h3>🍽️ 배고픔 지수</h3>
+                        <div class="status-bar">
+                            <div class="status-fill" id="hungerBar" style="width: 75%"></div>
+                        </div>
+                        <span id="hungerText">매우 배고픔</span>
+                    </div>
+                    
+                    <div class="status-panel">
+                        <h3>😵 소화 상태</h3>
+                        <div class="status-bar">
+                            <div class="status-fill" id="digestionBar" style="width: 30%"></div>
+                        </div>
+                        <span id="digestionText">소화 중</span>
+                    </div>
+                    
+                    <div class="status-panel">
+                        <h3>✨ 기분</h3>
+                        <div class="mood-display" id="moodDisplay">😋 행복</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 컨트롤 패널 -->
+            <div class="control-panel">
+                <div class="feeding-section">
+                    <h3>🍯 누렁이에게 기억 먹이기</h3>
+                    <div class="memory-foods">
+                        <button class="memory-food" onclick="feedMemory('childhood')" data-type="childhood">
+                            <span class="food-icon">🧸</span>
+                            <span class="food-name">어린시절 기억</span>
+                            <span class="food-effect">+20 배고픔 해소</span>
+                        </button>
+                        
+                        <button class="memory-food" onclick="feedMemory('friendship')" data-type="friendship">
+                            <span class="food-icon">👫</span>
+                            <span class="food-name">우정의 기억</span>
+                            <span class="food-effect">+15 배고픔 해소</span>
+                        </button>
+                        
+                        <button class="memory-food" onclick="feedMemory('love')" data-type="love">
+                            <span class="food-icon">💕</span>
+                            <span class="food-name">사랑의 기억</span>
+                            <span class="food-effect">+30 배고픔 해소</span>
+                        </button>
+                        
+                        <button class="memory-food" onclick="feedMemory('adventure')" data-type="adventure">
+                            <span class="food-icon">🗺️</span>
+                            <span class="food-name">모험의 기억</span>
+                            <span class="food-effect">+25 배고픔 해소</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="vomit-section">
+                    <h3>🤮 토해내기 명령</h3>
+                    <div class="vomit-controls">
+                        <button class="vomit-btn" id="vomitBtn" onclick="triggerVomit()">
+                            <span class="btn-icon">🤮</span>
+                            <span class="btn-text">기억 토해내기!</span>
+                        </button>
+                        
+                        <div class="vomit-info">
+                            <div class="cooldown-timer" id="cooldownTimer" style="display: none;">
+                                <span>⏰ 다음 토해내기까지: <span id="cooldownTime">0</span>초</span>
+                            </div>
+                            
+                            <div class="success-rate">
+                                <span>성공 확률: <span id="successRate">85%</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 토해내기 애니메이션 영역 -->
+            <div class="vomit-animation-area" id="vomitArea">
+                <div class="vomit-particles" id="vomitParticles">
+                    <!-- 파티클 애니메이션들 -->
+                </div>
+            </div>
+            
+            <!-- 결과 상품들 -->
+            <div class="vomit-results" id="vomitResults" style="display: none;">
+                <div class="results-header">
+                    <h3>✨ 토해낸 기억 물품들!</h3>
+                    <div class="results-stats">
+                        <span>총 <span id="resultCount">0</span>개의 물품 생성</span>
+                    </div>
+                </div>
+                
+                <div class="results-grid" id="resultsGrid">
+                    <!-- 토해낸 상품들이 여기 표시됩니다 -->
+                </div>
+                
+                <div class="results-actions">
+                    <button onclick="saveAllToCart()" class="btn btn-primary">
+                        🛒 모두 장바구니에 담기
+                    </button>
+                    <button onclick="clearResults()" class="btn btn-outline">
+                        결과 지우기
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 통계 섹션 -->
+            <div class="statistics-section">
+                <h3>📊 오늘의 토해내기 통계</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-value" id="todayVomitCount">23</div>
+                        <div class="stat-label">토해내기 횟수</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">📦</div>
+                        <div class="stat-value" id="todayItemCount">147</div>
+                        <div class="stat-label">생성된 물품</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value" id="bestRarity">9.8</div>
+                        <div class="stat-label">최고 희귀도</div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-value" id="totalValue">2,340,000</div>
+                        <div class="stat-label">총 가치(원)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 특별 이벤트 모달 -->
+    <div id="eventModal" class="modal event-modal">
+        <div class="modal-content event-content">
+            <div class="event-header">
+                <div class="event-icon" id="eventIcon">🎉</div>
+                <h2 id="eventTitle">특별 이벤트!</h2>
+            </div>
+            <div class="event-body">
+                <p id="eventDescription"></p>
+                <div class="event-reward" id="eventReward"></div>
+            </div>
+            <div class="event-actions">
+                <button onclick="closeEventModal()" class="btn btn-primary">
+                    확인
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 알림 토스트 -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/memory-treasures.js"></script>
+    <script src="js/simulator.js"></script>
+    <script>
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            checkUserLogin();
+            initializeSimulator();
+            startStatusUpdates();
+        });
+    </script>
+</body>
+</html>

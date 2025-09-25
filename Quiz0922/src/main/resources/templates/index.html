@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏪 Memory Treasures - 누렁이와 탱고의 기억 잡화점</title>
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🏪</span>
+                    <h1>Memory Treasures</h1>
+                </div>
+                
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-link active">홈</a>
+                    <a href="products.html" class="nav-link">상품</a>
+                    <a href="memory-simulator.html" class="nav-link">기억 토해내기</a>
+                    <a href="cart.html" class="nav-link">
+                        <span class="cart-icon">🛒</span>
+                        장바구니 <span id="cart-count" class="cart-count">0</span>
+                    </a>
+                </nav>
+                
+                <div class="user-menu">
+                    <div class="user-info" id="userInfo" style="display: none;">
+                        <span id="username"></span>
+                        <button onclick="logout()" class="logout-btn">로그아웃</button>
+                    </div>
+                    <div class="auth-buttons" id="authButtons">
+                        <a href="login.html" class="btn btn-outline">로그인</a>
+                        <a href="register.html" class="btn btn-primary">회원가입</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 히어로 섹션 -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h2 class="hero-title">
+                        <span class="gradient-text">기억이 물건이 되는</span><br>
+                        마법 같은 잡화점
+                    </h2>
+                    <p class="hero-description">
+                        누렁이가 토해낸 소중한 기억들이 특별한 물건으로 변환되어 나타납니다.<br>
+                        탱고와 함께 운영하는 차원을 넘나드는 신비로운 쇼핑 경험을 만나보세요!
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="products.html" class="btn btn-large btn-primary">
+                            ✨ 기억 구경하기
+                        </a>
+                        <a href="memory-simulator.html" class="btn btn-large btn-outline">
+                            🤮 토해내기 체험
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="hero-characters">
+                    <div class="character-showcase">
+                        <div class="character nuryeong" onclick="showCharacterInfo('nuryeong')">
+                            <div class="character-avatar">🐕</div>
+                            <h3>누렁이</h3>
+                            <p>기억을 먹는 존재</p>
+                        </div>
+                        <div class="character tango" onclick="showCharacterInfo('tango')">
+                            <div class="character-avatar">🐱</div>
+                            <h3>탱고</h3>
+                            <p>시공간 오류 해결사</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 실시간 상태 -->
+    <section class="live-status">
+        <div class="container">
+            <div class="status-grid">
+                <div class="status-card nuryeong-status">
+                    <div class="status-icon">🐕</div>
+                    <h3>누렁이 상태</h3>
+                    <div id="nuryeongMood" class="mood-display">배고픔 😋</div>
+                    <div class="status-detail">
+                        <span>오늘 토해낸 기억: <strong id="dailyVomitCount">47개</strong></span>
+                    </div>
+                </div>
+                
+                <div class="status-card tango-status">
+                    <div class="status-icon">🐱</div>
+                    <h3>탱고 상태</h3>
+                    <div id="tangoStatus" class="mood-display">모험 중 ⚡</div>
+                    <div class="status-detail">
+                        <span>차원 탐사 진행률: <strong>73%</strong></span>
+                    </div>
+                </div>
+                
+                <div class="status-card shop-status">
+                    <div class="status-icon">🏪</div>
+                    <h3>상점 현황</h3>
+                    <div class="shop-stats">
+                        <div>총 상품: <strong id="totalProducts">234개</strong></div>
+                        <div>신규 입고: <strong id="newProducts">12개</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 추천 상품 -->
+    <section class="featured-products">
+        <div class="container">
+            <div class="section-header">
+                <h2>✨ 오늘의 특별한 기억들</h2>
+                <p>누렁이가 방금 토해낸 따끈따끈한 기억 물품들</p>
+            </div>
+            
+            <div class="products-grid" id="featuredProducts">
+                <!-- JavaScript로 동적 생성 -->
+            </div>
+            
+            <div class="section-footer">
+                <a href="products.html" class="btn btn-outline">
+                    모든 상품 보기 →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 기억 카테고리 -->
+    <section class="memory-categories">
+        <div class="container">
+            <h2>🎭 기억의 종류</h2>
+            <div class="categories-grid">
+                <div class="category-card" onclick="viewCategory('CHILDHOOD')">
+                    <div class="category-icon">🧸</div>
+                    <h3>어린시절</h3>
+                    <p>순수하고 따뜻한 추억들</p>
+                    <span class="item-count">34개</span>
+                </div>
+                
+                <div class="category-card" onclick="viewCategory('FRIENDSHIP')">
+                    <div class="category-icon">👫</div>
+                    <h3>우정</h3>
+                    <p>소중한 친구들과의 순간</p>
+                    <span class="item-count">28개</span>
+                </div>
+                
+                <div class="category-card" onclick="viewCategory('ADVENTURE')">
+                    <div class="category-icon">🗺️</div>
+                    <h3>모험</h3>
+                    <p>탱고의 차원 여행 기념품</p>
+                    <span class="item-count">19개</span>
+                </div>
+                
+                <div class="category-card" onclick="viewCategory('FOOD')">
+                    <div class="category-icon">🍰</div>
+                    <h3>음식</h3>
+                    <p>맛있었던 기억의 조각들</p>
+                    <span class="item-count">42개</span>
+                </div>
+                
+                <div class="category-card" onclick="viewCategory('EXPERIMENT')">
+                    <div class="category-icon">🧪</div>
+                    <h3>실험</h3>
+                    <p>와플곰의 과학 실험 도구</p>
+                    <span class="item-count">15개</span>
+                </div>
+                
+                <div class="category-card" onclick="viewCategory('TOY')">
+                    <div class="category-icon">🎮</div>
+                    <h3>장난감</h3>
+                    <p>깜자의 비밀 컬렉션</p>
+                    <span class="item-count">31개</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 캐릭터 정보 모달 -->
+    <div id="characterModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCharacterModal()">&times;</span>
+            <div id="characterInfo">
+                <!-- JavaScript로 동적 생성 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 알림 토스트 -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- 푸터 -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Memory Treasures</h3>
+                    <p>기억이 물건이 되는 마법 같은 잡화점</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>캐릭터들</h4>
+                    <ul>
+                        <li>🐕 누렁이 - 기억 제공자</li>
+                        <li>🐱 탱고 - 상점 운영자</li>
+                        <li>🐰 토심이 - 감정 컨설턴트</li>
+                        <li>🧸 와플곰 - 품질 검수관</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>이용 안내</h4>
+                    <ul>
+                        <li><a href="products.html">상품 둘러보기</a></li>
+                        <li><a href="memory-simulator.html">기억 토해내기</a></li>
+                        <li><a href="cart.html">장바구니</a></li>
+                        <li><a href="user-profile.html">마이페이지</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Memory Treasures. 모든 기억은 누렁이의 소유입니다. 🐕</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/memory-treasures.js"></script>
+    <script>
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFeaturedProducts();
+            updateLiveStatus();
+            checkUserLogin();
+            
+            // 실시간 상태 업데이트 (30초마다)
+            setInterval(updateLiveStatus, 30000);
+        });
+    </script>
+</body>
+</html>

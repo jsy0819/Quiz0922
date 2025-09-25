@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 - Memory Treasures</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-body p-5">
+                        <!-- 로고 -->
+                        <div class="text-center mb-4">
+                            <h1 class="display-4">🏪</h1>
+                            <h2 class="card-title text-primary">Memory Treasures</h2>
+                            <p class="text-muted">기억 속 보물상자에 오신 걸 환영해요!</p>
+                        </div>
+
+                        <!-- 에러 메시지 -->
+                        <div th:if="${error}" class="alert alert-danger" role="alert">
+                            🐱 급하냥: "아이고! 아이디나 비밀번호가 틀렸네요! 빨리빨리 다시 해보세요!"
+                        </div>
+
+                        <!-- 로그아웃 메시지 -->
+                        <div th:if="${logout}" class="alert alert-success" role="alert">
+                            🐕 누렁이: "안전하게 로그아웃되었어요! 기억은... 맛있었어요!"
+                        </div>
+
+                        <!-- 로그인 폼 -->
+                        <form th:action="@{/login}" method="post">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">🆔 아이디</label>
+                                <input type="text" class="form-control" id="username" name="username" 
+                                       placeholder="사용자 아이디를 입력하세요" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="password" class="form-label">🔐 비밀번호</label>
+                                <input type="password" class="form-control" id="password" name="password" 
+                                       placeholder="비밀번호를 입력하세요" required>
+                            </div>
+                            
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="remember-me" name="remember-me">
+                                <label class="form-check-label" for="remember-me">로그인 상태 유지</label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary w-100 mb-3">
+                                🚀 로그인하기
+                            </button>
+                        </form>
+
+                        <!-- 회원가입 링크 -->
+                        <div class="text-center">
+                            <p class="mb-0">아직 계정이 없나요? 
+                                <a th:href="@{/register}" class="text-primary">회원가입</a>
+                            </p>
+                            <a th:href="@{/}" class="text-muted">🏠 홈으로</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 캐릭터 메시지 -->
+                <div class="text-center mt-3 p-3 bg-white rounded shadow-sm">
+                    <p class="mb-0">🐱 <strong>탱고:</strong> "어서와! 오늘은 어떤 기억을 찾아볼까?"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

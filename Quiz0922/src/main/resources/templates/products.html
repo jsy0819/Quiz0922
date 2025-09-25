@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 목록 - Memory Treasures</title>
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 헤더 (index.html과 동일) -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🏪</span>
+                    <h1><a href="index.html">Memory Treasures</a></h1>
+                </div>
+                
+                <nav class="main-nav">
+                    <a href="index.html" class="nav-link">홈</a>
+                    <a href="products.html" class="nav-link active">상품</a>
+                    <a href="memory-simulator.html" class="nav-link">기억 토해내기</a>
+                    <a href="cart.html" class="nav-link">
+                        <span class="cart-icon">🛒</span>
+                        장바구니 <span id="cart-count" class="cart-count">0</span>
+                    </a>
+                </nav>
+                
+                <div class="user-menu">
+                    <div class="user-info" id="userInfo" style="display: none;">
+                        <span id="username"></span>
+                        <button onclick="logout()" class="logout-btn">로그아웃</button>
+                    </div>
+                    <div class="auth-buttons" id="authButtons">
+                        <a href="login.html" class="btn btn-outline">로그인</a>
+                        <a href="register.html" class="btn btn-primary">회원가입</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 상품 필터 섹션 -->
+    <section class="product-filters">
+        <div class="container">
+            <div class="filters-header">
+                <h2>🎭 기억의 보물들</h2>
+                <div class="view-options">
+                    <button class="view-btn active" data-view="grid">
+                        <span>📋</span> 격자
+                    </button>
+                    <button class="view-btn" data-view="list">
+                        <span>📝</span> 목록
+                    </button>
+                </div>
+            </div>
+            
+            <div class="filters-content">
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="기억 속 물건을 찾아보세요..." />
+                    <button onclick="searchProducts()" class="search-btn">🔍</button>
+                </div>
+                
+                <div class="filter-row">
+                    <!-- 카테고리 필터 -->
+                    <div class="filter-group">
+                        <label>기억 종류:</label>
+                        <select id="memoryTypeFilter" onchange="filterProducts()">
+                            <option value="">전체</option>
+                            <option value="CHILDHOOD">어린시절 🧸</option>
+                            <option value="FRIENDSHIP">우정 👫</option>
+                            <option value="LOVE">사랑 💕</option>
+                            <option value="ADVENTURE">모험 🗺️</option>
+                            <option value="FOOD">음식 🍰</option>
+                            <option value="TOY">장난감 🎮</option>
+                            <option value="EXPERIMENT">실험 🧪</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 가격 필터 -->
+                    <div class="filter-group">
+                        <label>가격 범위:</label>
+                        <select id="priceFilter" onchange="filterProducts()">
+                            <option value="">전체</option>
+                            <option value="0-10000">1만원 미만</option>
+                            <option value="10000-50000">1만원 - 5만원</option>
+                            <option value="50000-100000">5만원 - 10만원</option>
+                            <option value="100000+">10만원 이상</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 원래 주인 필터 -->
+                    <div class="filter-group">
+                        <label>기억 주인:</label>
+                        <select id="ownerFilter" onchange="filterProducts()">
+                            <option value="">전체</option>
+                            <option value="토심이">토심이 🐰</option>
+                            <option value="와플곰">와플곰 🧸</option>
+                            <option value="탱고">탱고 🐱</option>
+                            <option value="누렁이">누렁이 🐕</option>
+                            <option value="바쁘개">바쁘개 🐕‍🦺</option>
+                            <option value="급하냥">급하냥 🐱</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 감정 강도 필터 -->
+                    <div class="filter-group">
+                        <label>감정 강도:</label>
+                        <input type="range" id="emotionFilter" min="1" max="10" value="5" 
+                               oninput="updateEmotionDisplay(this.value)" onchange="filterProducts()">
+                        <span id="emotionDisplay">5 이상</span>
+                    </div>
+                    
+                    <!-- 정렬 옵션 -->
+                    <div class="filter-group">
+                        <label>정렬:</label>
+                        <select id="sortFilter" onchange="sortProducts()">
+                            <option value="newest">최신순</option>
+                            <option value="oldest">오래된 순</option>
+                            <option value="price-low">가격 낮은 순</option>
+                            <option value="price-high">가격 높은 순</option>
+                            <option value="emotion-high">감정 강도 높은 순</option>
+                            <option value="rarity-high">희귀도 높은 순</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="active-filters" id="activeFilters">
+                    <!-- 활성화된 필터들이 여기 표시됩니다 -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 상품 목록 -->
+    <section class="products-section">
+        <div class="container">
+            <div class="products-header">
+                <div class="results-info">
+                    <span id="resultsCount">총 0개의 기억</span>
+                    <span id="loadingIndicator" class="loading" style="display: none;">
+                        🌀 기억을 불러오는 중...
+                    </span>
+                </div>
+                
+                <div class="quick-actions">
+                    <button onclick="clearAllFilters()" class="btn btn-outline btn-small">
+                        필터 초기화
+                    </button>
+                    <button onclick="refreshProducts()" class="btn btn-primary btn-small">
+                        🔄 새로고침
+                    </button>
+                </div>
+            </div>
+            
+            <div class="products-container">
+                <div id="productsGrid" class="products-grid view-grid">
+                    <!-- JavaScript로 동적 생성 -->
+                </div>
+                
+                <!-- 빈 상태 -->
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <div class="empty-icon">😅</div>
+                    <h3>아직 기억이 없네요...</h3>
+                    <p>누렁이에게 기억을 토해내달라고 부탁해보세요!</p>
+                    <a href="memory-simulator.html" class="btn btn-primary">
+                        기억 토해내기 →
+                    </a>
+                </div>
+                
+                <!-- 로딩 더 보기 -->
+                <div class="load-more-container" id="loadMoreContainer">
+                    <button onclick="loadMoreProducts()" class="btn btn-outline" id="loadMoreBtn">
+                        더 많은 기억 보기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 추천 상품 사이드바 -->
+    <div class="recommendations-sidebar" id="recommendationsSidebar">
+        <div class="sidebar-header">
+            <h3>✨ 당신을 위한 추천</h3>
+            <button onclick="closeSidebar()" class="close-btn">&times;</button>
+        </div>
+        <div class="sidebar-content" id="recommendationsContent">
+            <!-- JavaScript로 동적 생성 -->
+        </div>
+    </div>
+    
+    <!-- 추천 토글 버튼 -->
+    <button class="recommendations-toggle" onclick="toggleRecommendations()">
+        <span>💡</span>
+        <span>추천</span>
+    </button>
+
+    <!-- 상품 상세 모달 -->
+    <div id="productModal" class="modal">
+        <div class="modal-content product-modal-content">
+            <span class="close" onclick="closeProductModal()">&times;</span>
+            <div id="productDetails">
+                <!-- JavaScript로 동적 생성 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 알림 토스트 -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/memory-treasures.js"></script>
+    <script src="js/products.js"></script>
+    <script>
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            checkUserLogin();
+            loadProducts();
+            loadRecommendations();
+            initializeFilters();
+        });
+    </script>
+</body>
+</html>

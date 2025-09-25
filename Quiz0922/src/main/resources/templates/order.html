@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" 
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문하기 - Memory Treasures</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- 네비게이션 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">🏪 Memory Treasures</a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text me-2" sec:authentication="name"></span>
+                <form th:action="@{/logout}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-light btn-sm">로그아웃</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="mb-4">📋 주문서 작성</h2>
+
+                <form th:action="@{/order/process}" th:object="${orderDTO}" method="post">
+                    <!-- 주문 상품 목록 -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">🛒 주문 상품</h5>
+                        </div>
+                        <div class="card-body">
+                            <div th:each="item, stat : ${orderItems}" class="row mb-3 pb-3" 
+                                 th:classappend="${!stat.last} ? 'border-bottom'">
+                                <div class="col-2 text-center">
+                                    <div style="font-size: 2.5rem;" th:text="${item.product.memoryType.icon}">🧸</div>
+                                </div>
+                                <div class="col-6">
+                                    <h6 th:text="${item.product.name}">상품명</h6>
+                                    <p class="text-muted small mb-1" th:text="${item.product.originalOwner} + '의 기억'">토심이의 기억</p>
+                                    <span class="badge bg-secondary" 
+                                          th:text="'희귀도 ' + ${item.product.rarityScore}">희귀도 8</span>
+                                </div>
+                                <div class="col-2 text-center">
+                                    <span th:text="${item.quantity} + '개'">1개</span>
+                                </div>
+                                <div class="col-2 text-end">
+                                    <strong th:text="${#numbers.formatInteger(item.product.price * item.quantity, 0, 'COMMA')} + '원'">45,000원</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 배송 정보 -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">🚀 차원간 배송 정보</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="receiverName" class="form-label">받는 분 이름 *</label>
+                                        <input type="text" class="form-control" th:field="*{receiverName}" 
+                                               id="receiverName" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="receiverPhone" class="form-label">연락처 *</label>
+                                        <input type="tel" class="form-control" th:field="*{receiverPhone}" 
+                                               id="receiverPhone" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="deliveryAddress" class="form-label">배송 주소 *</label>
+                                <textarea class="form-control" th:field="*{deliveryAddress}" 
+                                          id="deliveryAddress" rows="3" required
+                                          placeholder="차원 좌표를 정확히 입력해주세요"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">배송 방법 선택</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" th:field="*{deliveryType}" 
+                                           value="NORMAL" id="normal">
+                                    <label class="form-check-label" for="normal">
+                                        일반 우주 택배 (1-2차원일, 무료)
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" th:field="*{deliveryType}" 
+                                           value="EXPRESS" id="express">
+                                    <label class="form-check-label" for="express">
+                                        탱고의 차원 이동 서비스 (즉시 배송, +10,000원)
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" th:field="*{deliveryType}" 
+                                           value="NURYEONG" id="nuryeong">
+                                    <label class="form-check-label" for="nuryeong">
+                                        누렁이 직접 배송 (무료, 단 중간에 먹을 수도 있음 😅)
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="specialRequest" class="form-label">특별 요청사항</label>
+                                <textarea class="form-control" th:field="*{specialRequest}" 
+                                          id="specialRequest" rows="2"
+                                          placeholder="배송 시 주의사항이 있다면 적어주세요"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 결제 정보 -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">💳 결제 정보</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-8">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>상품 금액:</span>
+                                        <span th:text="${#numbers.formatInteger(orderSummary.subtotal, 0, 'COMMA')} + '원'">45,000원</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>기억 보관료:</span>
+                                        <span>3,000원</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>배송비:</span>
+                                        <span th:text="${#numbers.formatInteger(orderSummary.shippingFee, 0, 'COMMA')} + '원'">0원</span>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between">
+                                        <strong>총 결제 금액:</strong>
+                                        <strong class="text-primary" 
+                                                th:text="${#numbers.formatInteger(orderSummary.totalAmount, 0, 'COMMA')} + '원'">48,000원</strong>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">결제 방법</label>
+                                        <select class="form-select" th:field="*{paymentMethod}">
+                                            <option value="CARD">신용카드</option>
+                                            <option value="BANK">무통장입금</option>
+                                            <option value="MEMORY">기억으로 결제</option>
+                                            <option value="TOSIM_MOOD">토심이 기분 결제</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 약관 동의 -->
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" th:field="*{termsAgreed}" id="terms" required>
+                                <label class="form-check-label" for="terms">
+                                    주문 내용을 확인했으며, Memory Treasures 이용약관에 동의합니다. (필수)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" th:field="*{privacyAgreed}" id="privacy" required>
+                                <label class="form-check-label" for="privacy">
+                                    개인정보 수집 및 이용에 동의합니다. (필수)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 주문 버튼 -->
+                    <div class="text-center mb-4">
+                        <button type="submit" class="btn btn-primary btn-lg px-5">
+                            💳 결제하기
+                        </button>
+                        <a th:href="@{/cart}" class="btn btn-outline-secondary btn-lg ms-3">
+                            🛒 장바구니로
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 캐릭터 메시지 -->
+    <div class="container mt-4">
+        <div class="alert alert-info text-center">
+            <p class="mb-0">🐱 <strong>탱고:</strong> "차원간 배송은 안전하게 처리할게! 걱정 마!"</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
