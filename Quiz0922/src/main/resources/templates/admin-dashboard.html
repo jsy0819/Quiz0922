@@ -11,9 +11,9 @@
     <!-- 네비게이션 -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container-fluid">
-            <a class="navbar-brand" th:href="@{/}">🏪 Memory Treasures Admin</a>
+            <a class="navbar-brand" th:href="@{/admin/dashboard}">🏪 Memory Treasures Admin</a>
             <div class="navbar-nav ms-auto">
-                <a class="nav-link" th:href="@{/}">사용자 사이트</a>
+                <a class="nav-link" th:href="@{/index}">사용자 사이트</a>
                 <span class="navbar-text me-2" sec:authentication="name"></span>
                 <form th:action="@{/logout}" method="post" class="d-inline">
                     <button type="submit" class="btn btn-outline-light btn-sm">로그아웃</button>
