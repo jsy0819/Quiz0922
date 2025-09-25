@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import lombok.RequiredArgsConstructor;
@@ -16,13 +18,17 @@ public class SecurityConfig   {
 	private final MemoryAuthenticationFaliureHandler failureHandler;
 	
 	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
     public SecurityFilterChain clubFilterChain(HttpSecurity http) throws Exception {
 
 		return http
-				.csrf(csrf -> {	
-					csrf.disable();
-					})
-				.sessionManagement(session -> session
+		        .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**")) // CSRF 무시
+		        .headers(headers -> headers.frameOptions().sameOrigin())
+		        .sessionManagement(session -> session
 					.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
 					.maximumSessions(1)
 					.maxSessionsPreventsLogin(false)
@@ -31,7 +37,8 @@ public class SecurityConfig   {
 	                    .requestMatchers("/", "/**", "/index", "/login", "/register",
                                 "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
 	                    // 관리자 전용 구역
-	                    .requestMatchers("/admin/**").hasRole("ADMIN")                    
+	                    .requestMatchers("/admin/**").hasRole("ADMIN")     
+	                    .requestMatchers("/h2-console/**").permitAll()
 	                    // 나머지는 인증 필요
 	                    .anyRequest().authenticated()
 	                )
