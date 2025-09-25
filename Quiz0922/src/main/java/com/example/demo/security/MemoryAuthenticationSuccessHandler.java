@@ -26,7 +26,7 @@ public class MemoryAuthenticationSuccessHandler implements AuthenticationSuccess
       for (GrantedAuthority authority : authorities) {
           if (authority.getAuthority().equals("ROLE_ADMIN")) {
               // url 주소 추후 admin-dashboard.html 수정필요
-              response.sendRedirect("/admin/dashboard");
+              response.sendRedirect("/index");
               return;
           }
       }

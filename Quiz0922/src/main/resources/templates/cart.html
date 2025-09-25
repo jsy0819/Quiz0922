@@ -14,14 +14,14 @@
             <div class="header-content">
                 <div class="logo">
                     <span class="logo-icon">🏪</span>
-                    <h1><a href="index.html">Memory Treasures</a></h1>
+                    <h1><a th:href="@{/index}">Memory Treasures</a></h1>
                 </div>
                 
                 <nav class="main-nav">
-                    <a href="index.html" class="nav-link">홈</a>
-                    <a href="products.html" class="nav-link">상품</a>
-                    <a href="memory-simulator.html" class="nav-link">기억 토해내기</a>
-                    <a href="cart.html" class="nav-link active">
+					<a th:href="@{/index}" class="nav-link active">홈</a>
+					<a th:href="@{/products}" class="nav-link">상품</a>
+					<a th:href="@{/memory-simulator}" class="nav-link">기억 토해내기</a>
+					<a th:href="@{/cart}" class="nav-link">
                         <span class="cart-icon">🛒</span>
                         장바구니 <span id="cart-count" class="cart-count">0</span>
                     </a>
@@ -33,8 +33,8 @@
                         <button onclick="logout()" class="logout-btn">로그아웃</button>
                     </div>
                     <div class="auth-buttons" id="authButtons">
-                        <a href="login.html" class="btn btn-outline">로그인</a>
-                        <a href="register.html" class="btn btn-primary">회원가입</a>
+						<a th:href="@{/login}" class="btn btn-outline">로그인</a>
+						<a th:href="@{/register}" class="btn btn-primary">회원가입</a>
                     </div>
                 </div>
             </div>
