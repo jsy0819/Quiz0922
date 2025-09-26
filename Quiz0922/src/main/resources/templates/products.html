@@ -30,7 +30,7 @@
 				<div class="user-menu">
 					<div sec:authorize="isAuthenticated()" style="display: flex; align-items: center; gap: 8px;">
 					    <span style="font-weight: bold; font-size: 17px; color: #222; letter-spacing: 0px;">
-					        <span sec:authentication="name"></span> 님
+					        <span sec:authentication="name"></span> 님ㅇ
 					    </span>
 						<form th:action="@{/logout}" method="post" style="margin:0; display:inline;">
 						    <button type="submit" class="btn btn-primary" style="padding: 6px 18px; font-size: 17px;">
