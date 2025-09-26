@@ -27,16 +27,22 @@
                     </a>
                 </nav>
                 
-                <div class="user-menu">
-                    <div class="user-info" id="userInfo" style="display: none;">
-                        <span id="username"></span>
-                        <button onclick="logout()" class="logout-btn">로그아웃</button>
-                    </div>
-                    <div class="auth-buttons" id="authButtons">
-						<a th:href="@{/login}" class="btn btn-outline">로그인</a>
-						<a th:href="@{/register}" class="btn btn-primary">회원가입</a>
-                    </div>
-                </div>
+				<div class="user-menu">
+					<div sec:authorize="isAuthenticated()" style="display: flex; align-items: center; gap: 8px;">
+					    <span style="font-weight: bold; font-size: 17px; color: #222; letter-spacing: 0px;">
+					        <span sec:authentication="name"></span> 님
+					    </span>
+						<form th:action="@{/logout}" method="post" style="margin:0; display:inline;">
+						    <button type="submit" class="btn btn-primary" style="padding: 6px 18px; font-size: 17px;">
+						        로그아웃
+						    </button>
+						</form>
+					</div>
+				    <div sec:authorize="!isAuthenticated()" class="auth-buttons">
+				        <a th:href="@{/login}" class="btn btn-outline">로그인</a>
+				        <a th:href="@{/register}" class="btn btn-primary">회원가입</a>
+				    </div>
+				</div>
             </div>
         </div>
     </header>

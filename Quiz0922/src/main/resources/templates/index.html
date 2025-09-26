@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"> 
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +16,12 @@
                     <span class="logo-icon">🏪</span>
                     <h1>Memory Treasures</h1>
                 </div>
-                
+				<a class="admin-dashboard-btn"
+				   th:href="@{/admin/dashboard}"
+				   sec:authorize="hasRole('ADMIN')"
+				   style="display:inline-block; margin-top:6px; margin-left:4px; font-size:15px; color:#B8860B; font-weight:bold; background:#222; padding:5px 14px; border-radius:7px;">
+				    관리자 페이지
+				</a>
 				<nav class="main-nav">
 				    <a th:href="@{/index}" class="nav-link active">홈</a>
 				    <a th:href="@{/products}" class="nav-link">상품</a>
@@ -27,16 +32,22 @@
 				    </a>
 				</nav>
                 
-                <div class="user-menu">
-                    <div class="user-info" id="userInfo" style="display: none;">
-                        <span id="username"></span>
-                        <button onclick="logout()" class="logout-btn">로그아웃</button>
-                    </div>
-                    <div class="auth-buttons" id="authButtons">
-						<a th:href="@{/login}" class="btn btn-outline">로그인</a>
-						<a th:href="@{/register}" class="btn btn-primary">회원가입</a>
-                    </div>
-                </div>
+				<div class="user-menu">
+					<div sec:authorize="isAuthenticated()" style="display: flex; align-items: center; gap: 8px;">
+					    <span style="font-weight: bold; font-size: 17px; color: #222; letter-spacing: 0px;">
+					        <span sec:authentication="name"></span> 님
+					    </span>
+						<form th:action="@{/logout}" method="post" style="margin:0; display:inline;">
+						    <button type="submit" class="btn btn-primary" style="padding: 6px 18px; font-size: 17px;">
+						        로그아웃
+						    </button>
+						</form>
+					</div>
+				    <div sec:authorize="!isAuthenticated()" class="auth-buttons">
+				        <a th:href="@{/login}" class="btn btn-outline">로그인</a>
+				        <a th:href="@{/register}" class="btn btn-primary">회원가입</a>
+				    </div>
+				</div>
             </div>
         </div>
     </header>

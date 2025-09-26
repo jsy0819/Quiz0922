@@ -26,11 +26,6 @@ public class HomeController {
 		return "cart";
 	}
 	
-	@GetMapping("/admin/dashboard")
-	public String adminLogin() {
-		return "admin-dashboard";
-	}
-	
 	@GetMapping("/")
 	public String rootPage() {
 		return "index";
