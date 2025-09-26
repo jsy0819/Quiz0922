@@ -34,7 +34,7 @@ public class SecurityConfig   {
 					.maxSessionsPreventsLogin(false)
 					)
 				.authorizeHttpRequests(auth -> auth
-	                    .requestMatchers("/", "/**", "/index", "/login", "/register",
+	                    .requestMatchers("/", "/index", "/login", "/register",
                                 "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
                         .requestMatchers("/api/**").permitAll()
 	                    // 관리자 전용 구역
@@ -48,7 +48,7 @@ public class SecurityConfig   {
 	              .loginPage("/login")                    				// 로그인 페이지 URL
 	              .usernameParameter("username")               					// 아이디 파라미터명
 	              .passwordParameter("password")               					// 비밀번호 파라미터명
-	              .defaultSuccessUrl("/index", true)       					// 로그인 성공 시 이동할 페이지
+	              .defaultSuccessUrl("/", true)       					// 로그인 성공 시 이동할 페이지
 	              .failureUrl("/login?error=true")        					// 로그인 실패 시 이동할 페이지
 	              .successHandler(successHandler)              					// 성공 핸들러
 	              .failureHandler(failureHandler)              					// 실패 핸들러
@@ -56,8 +56,8 @@ public class SecurityConfig   {
 	          )
                 // Logout 설정
                 .logout(logout -> logout
-                    .logoutUrl("/logout=true")                   		// 로그아웃 URL
-                    .logoutSuccessUrl("/login?logout") 		// 로그아웃 성공 시 이동할 페이지
+                    .logoutUrl("/logout")                   		// 로그아웃 URL
+                    .logoutSuccessUrl("/") 		// 로그아웃 성공 시 이동할 페이지
                     .invalidateHttpSession(true)               		 	// 세션 무효화
                     .deleteCookies("JSESSIONID")                		// 쿠키 삭제
                     .clearAuthentication(true)                  		// 인증 정보 삭제
