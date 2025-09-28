@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- 헤더 -->
+	<!-- 헤더 -->
     <header class="main-header">
         <div class="container">
             <div class="header-content">
@@ -52,7 +52,7 @@
         </div>
     </header>
 
-    <!-- 히어로 섹션 -->
+	<!-- 히어로 섹션 -->
     <section class="hero">
         <div class="container">
             <div class="hero-content">
@@ -78,7 +78,7 @@
                 <div class="hero-characters">
                     <div class="character-showcase">
                         <div class="character nuryeong" onclick="showCharacterInfo('nuryeong')">
-                            <div class="character-avatar">🐕</div>
+                            <div class="character-avatar">🐶</div>
                             <h3>누렁이</h3>
                             <p>기억을 먹는 존재</p>
                         </div>
@@ -93,21 +93,21 @@
         </div>
     </section>
 
-    <!-- 실시간 상태 -->
+	<!-- 실시간 상태 -->
     <section class="live-status">
         <div class="container">
             <div class="status-grid">
                 <div class="status-card nuryeong-status">
                     <div class="status-icon">🐕</div>
                     <h3>누렁이 상태</h3>
-                    <div id="nuryeongMood" class="mood-display">배고픔 😋</div>
+                    <div id="nuryeongMood" class="mood-display">배고픔 😩</div>
                     <div class="status-detail">
                         <span>오늘 토해낸 기억: <strong id="dailyVomitCount">47개</strong></span>
                     </div>
                 </div>
                 
                 <div class="status-card tango-status">
-                    <div class="status-icon">🐱</div>
+                    <div class="status-icon">🚀</div>
                     <h3>탱고 상태</h3>
                     <div id="tangoStatus" class="mood-display">모험 중 ⚡</div>
                     <div class="status-detail">
@@ -116,7 +116,7 @@
                 </div>
                 
                 <div class="status-card shop-status">
-                    <div class="status-icon">🏪</div>
+                    <div class="status-icon">🎁</div>
                     <h3>상점 현황</h3>
                     <div class="shop-stats">
                         <div>총 상품: <strong id="totalProducts">234개</strong></div>
@@ -127,7 +127,7 @@
         </div>
     </section>
 
-    <!-- 추천 상품 -->
+	<!-- 추천 상품 -->
     <section class="featured-products">
         <div class="container">
             <div class="section-header">
@@ -136,8 +136,8 @@
             </div>
             
             <div class="products-grid" id="featuredProducts">
-                <!-- JavaScript로 동적 생성 -->
-            </div>
+				<!-- JavaScript로 동적 생성 -->
+			</div>
             
             <div class="section-footer">
                 <a th:href="@{/products}" class="btn btn-outline">
@@ -147,20 +147,20 @@
         </div>
     </section>
 
-    <!-- 기억 카테고리 -->
+	<!-- 기억 카테고리 -->
     <section class="memory-categories">
         <div class="container">
             <h2>🎭 기억의 종류</h2>
             <div class="categories-grid">
                 <div class="category-card" onclick="viewCategory('CHILDHOOD')">
-                    <div class="category-icon">🧸</div>
+                    <div class="category-icon">👶</div>
                     <h3>어린시절</h3>
                     <p>순수하고 따뜻한 추억들</p>
                     <span class="item-count">34개</span>
                 </div>
                 
                 <div class="category-card" onclick="viewCategory('FRIENDSHIP')">
-                    <div class="category-icon">👫</div>
+                    <div class="category-icon">🤝</div>
                     <h3>우정</h3>
                     <p>소중한 친구들과의 순간</p>
                     <span class="item-count">28개</span>
@@ -174,7 +174,7 @@
                 </div>
                 
                 <div class="category-card" onclick="viewCategory('FOOD')">
-                    <div class="category-icon">🍰</div>
+                    <div class="category-icon">🍕</div>
                     <h3>음식</h3>
                     <p>맛있었던 기억의 조각들</p>
                     <span class="item-count">42개</span>
@@ -188,7 +188,7 @@
                 </div>
                 
                 <div class="category-card" onclick="viewCategory('TOY')">
-                    <div class="category-icon">🎮</div>
+                    <div class="category-icon">🧸</div>
                     <h3>장난감</h3>
                     <p>깜자의 비밀 컬렉션</p>
                     <span class="item-count">31개</span>
@@ -197,20 +197,20 @@
         </div>
     </section>
 
-    <!-- 캐릭터 정보 모달 -->
+	<!-- 캐릭터 정보 모달 -->
     <div id="characterModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeCharacterModal()">&times;</span>
             <div id="characterInfo">
                 <!-- JavaScript로 동적 생성 -->
-            </div>
+			</div>
         </div>
     </div>
 
-    <!-- 알림 토스트 -->
+	<!-- 알림 토스트 -->
     <div id="toastContainer" class="toast-container"></div>
 
-    <!-- 푸터 -->
+	<!-- 푸터 -->
     <footer class="main-footer">
         <div class="container">
             <div class="footer-content">
@@ -241,13 +241,18 @@
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2025 Memory Treasures. 모든 기억은 누렁이의 소유입니다. 🐕</p>
+                <p>&copy; 2025 Memory Treasures. 모든 기억은 누렁이의 소유입니다. 🐾</p>
             </div>
         </div>
     </footer>
 
     <script src="js/memory-treasures.js"></script>
     <script>
+        // ⭐ 추가된 함수: 카테고리 클릭 시 /products 페이지로 category 파라미터와 함께 이동
+        function viewCategory(categoryName) {
+            window.location.href = `/products?category=${categoryName}`;
+        }
+        
         // 페이지 로드 시 초기화
         document.addEventListener('DOMContentLoaded', function() {
             loadFeaturedProducts();

@@ -11,10 +11,12 @@ public class HomeController {
 		return "index";
 	}
 	
-	@GetMapping("/products")
-	public String product() {
-		return "products";
-	}
+// [주석 추가 이유]
+// 상품 기능 전담 컨트롤러(ProductsController 등)로 역할 분리함.
+//	@GetMapping("/products")
+//	public String product() {
+//		return "products";
+//	}
 	
 	@GetMapping("/memory-simulator")
 	public String memory() {
